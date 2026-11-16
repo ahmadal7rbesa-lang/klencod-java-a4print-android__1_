@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ورقة A4 للطباعة</title>
+<style>
+:root{--bg:#e9e5de;--card:#fff;--tx:#2a2622;--mut:#7a726a;--ac:#1f6f5c;--acx:#fff;--bd:#d8d1c5;--dan:#b3261e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1916;--card:#262320;--tx:#efeae2;--mut:#a39b8f;--ac:#4cb89e;--acx:#0d1d18;--bd:#3a352e;--dan:#f2918a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1a1916;--card:#262320;--tx:#efeae2;--mut:#a39b8f;--ac:#4cb89e;--acx:#0d1d18;--bd:#3a352e;--dan:#f2918a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",system-ui,sans-serif;-webkit-user-select:none;user-select:none}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:9px 12px;background:var(--ac);color:var(--acx)}
+button.g{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+button.d{background:var(--card);color:var(--dan);border:1px solid var(--bd)}
+#top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--bd)}
+.seg{display:flex;gap:4px}.seg button{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}.seg button.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+#stage{padding:12px 8px 340px}
+#wrap{margin:0 auto;position:relative;box-shadow:0 2px 14px rgba(0,0,0,.3)}
+#page{position:absolute;left:0;top:0;width:794px;height:1123px;background:#fff;transform-origin:0 0;overflow:hidden;touch-action:pan-y;direction:ltr}
+.el{position:absolute;touch-action:none;cursor:move}
+.el img{width:100%;height:100%;display:block;pointer-events:none}
+.tx{font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.4;white-space:pre}
+.tx span{display:block}
+.el.sel{outline:2px dashed #1f6f5c}
+.hd{display:none;position:absolute;right:-12px;bottom:-12px;width:26px;height:26px;border-radius:50%;background:#1f6f5c;border:3px solid #fff;touch-action:none}
+.el.sel .hd{display:block}
+#dock{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--bd);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+#panel{margin-bottom:8px}
+.r{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.r input[type=range]{flex:1}
+textarea{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:8px;-webkit-user-select:text;user-select:text}
+input[type=color]{width:40px;height:36px;border:1px solid var(--bd);border-radius:8px;padding:0;background:none}
+#bar{display:flex;gap:6px}#bar button,#bar label.b{flex:1;padding:11px 2px;font-size:14px}
+.b{display:block;text-align:center;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+[hidden]{display:none!important}
+#toast{position:fixed;top:calc(60px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 16px;border-radius:20px;z-index:20;font-size:14px}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:30;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;overflow:auto;color:#fff}
+#ov img{max-width:100%;background:#fff}
+#bar2{display:flex;gap:6px;margin-top:6px}#bar2 button{flex:1;padding:11px 4px}
+#bar label.b{font-size:14px}
+</style>
+</head>
+<body>
+<div id="top"><b>🖨️ ورقة A4</b><div class="seg"><button id="mc" class="on">ملوّن</button><button id="mb">أبيض وأسود</button></div></div>
+<div id="stage"><div id="wrap"><div id="page"></div></div></div>
+
+<div id="dock">
+<div id="panel" hidden>
+ <div class="r"><span id="plab">الحجم</span><input type="range" id="sz" min="5" max="100" step="1"></div>
+ <div id="tp"><textarea id="tt" rows="2"></textarea></div>
+ <div class="r"><span id="txo" class="r" style="margin:0"><button class="g" id="bold">غامق B</button><input type="color" id="col" value="#000000"></span><button class="g" id="fw">ملء العرض</button><button class="g" id="ct">توسيط</button><button class="d" id="rm">حذف</button></div>
+</div>
+<div id="bar"><label class="b" for="fi">🖼️ صورة</label><label class="b" for="fc">📷 كاميرا</label><label class="b" for="fp" id="ipl">📄 PDF</label><button id="at" class="g">🔤 نص</button></div>
+<div id="bar2"><button id="pdf">⬇️ حفظ PDF</button><button id="png">⬇️ حفظ صورة</button></div>
+</div>
+<input type="file" id="fi" accept="image/*" class="vh"><input type="file" id="fp" accept="application/pdf,.pdf" class="vh"><input type="file" id="fc" accept="image/*" capture="environment" class="vh">
+
+<script>
+var PW=794,PH=1123,LH=1.4,FONT='"Segoe UI",Tahoma,Arial,sans-serif';
+var els=[],sel=null,sc=1,bw=false,drag=null,DL=null;
+var mctx=document.createElement("canvas").getContext("2d");
+function $(i){return document.getElementById(i)}
+function rtl(t){return /[\u0600-\u06FF]/.test(t)}
+function toast(m){var t=document.createElement("div");t.id="toast";t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}
+
+function wrap(e){
+  mctx.font=(e.b?"bold ":"")+e.fs+"px "+FONT;var out=[];
+  e.t.split("\n").forEach(function(p){
+    if(!p){out.push("");return}
+    var line="";p.split(" ").forEach(function(w){var tt=line?line+" "+w:w;if(line&&mctx.measureText(tt).width>e.w){out.push(line);line=w}else line=tt});
+    out.push(line)});
+  return out}
+function meas(e){if(e.k==="i")e.h=e.w*e.ar;else{e.lines=wrap(e);e.h=e.lines.length*e.fs*LH}}
+function place(e){e.x=Math.max(0,Math.min(PW-e.w,e.x));e.y=Math.max(0,Math.min(PH-e.h,e.y))}
+function upd(e){
+  var d=e.n;d.style.left=e.x+"px";d.style.top=e.y+"px";d.style.width=e.w+"px";d.style.height=e.h+"px";
+  if(e.k==="t"){d.style.fontSize=e.fs+"px";d.style.fontWeight=e.b?"700":"400";d.style.color=e.c;d.style.direction=rtl(e.t)?"rtl":"ltr";d.firstChild.textContent=e.lines.join("\n")}}
+function scaleTo(e,nw){
+  var o={w:e.w,fs:e.fs,h:e.h};
+  if(e.k==="t"){e.fs=e.fs*nw/e.w}
+  e.w=nw;meas(e);
+  if(nw>PW||e.h>PH||nw<20||(e.k==="t"&&e.fs<6)){e.w=o.w;e.fs=o.fs;meas(e)}
+  place(e);upd(e);sync()}
+function mk(e){
+  var d=document.createElement("div");d.className="el"+(e.k==="t"?" tx":"");
+  if(e.k==="i"){e.img.draggable=false;d.appendChild(e.img)}else d.appendChild(document.createElement("span"));
+  var h=document.createElement("i");h.className="hd";d.appendChild(h);
+  e.n=d;$("page").appendChild(d);meas(e);place(e);upd(e);
+  d.addEventListener("pointerdown",function(ev){if(ev.target===h)return;select(e);drag={m:"m",e:e,sx:ev.clientX,sy:ev.clientY,x0:e.x,y0:e.y}});
+  h.addEventListener("pointerdown",function(ev){ev.stopPropagation();select(e);drag={m:"r",e:e,sx:ev.clientX,w0:e.w}});
+  select(e)}
+window.addEventListener("pointermove",function(ev){
+  if(!drag)return;var e=drag.e;
+  if(drag.m==="m"){e.x=drag.x0+(ev.clientX-drag.sx)/sc;e.y=drag.y0+(ev.clientY-drag.sy)/sc;place(e);upd(e)}
+  else scaleTo(e,drag.w0+(ev.clientX-drag.sx)/sc)});
+window.addEventListener("pointerup",function(){drag=null});
+window.addEventListener("pointercancel",function(){drag=null});
+$("page").addEventListener("pointerdown",function(ev){if(ev.target===$("page"))select(null)});
+
+function select(e){
+  sel=e;els.forEach(function(x){x.n.classList.toggle("sel",x===e)});
+  $("panel").hidden=!e;if(!e)return;
+  var t=e.k==="t";$("tp").hidden=!t;$("txo").hidden=!t;
+  $("sz").min=t?8:5;$("sz").max=t?200:100;$("plab").textContent=t?"حجم الخط":"الحجم";
+  if(t){$("tt").value=e.t;$("col").value=e.c}
+  sync()}
+function sync(){if(sel)$("sz").value=sel.k==="t"?sel.fs:sel.w/PW*100}
+$("sz").oninput=function(){var v=+this.value;if(sel.k==="i")scaleTo(sel,v/100*PW);else scaleTo(sel,sel.w*v/sel.fs)};
+$("tt").oninput=function(){sel.t=this.value;meas(sel);place(sel);upd(sel)};
+$("bold").onclick=function(){sel.b=!sel.b;meas(sel);place(sel);upd(sel)};
+$("col").oninput=function(){sel.c=this.value;upd(sel)};
+$("fw").onclick=function(){scaleTo(sel,sel.k==="i"?PW:PW-80);sel.x=(PW-sel.w)/2;place(sel);upd(sel)};
+$("ct").onclick=function(){sel.x=(PW-sel.w)/2;sel.y=(PH-sel.h)/2;place(sel);upd(sel)};
+$("rm").onclick=function(){sel.n.remove();els.splice(els.indexOf(sel),1);select(null)};
+
+function put(im){var ar=im.naturalHeight/im.naturalWidth,w=Math.min(PW-80,(PH-80)/ar);var e={k:"i",img:im,ar:ar,w:w,x:(PW-w)/2,y:(PH-w*ar)/2};els.push(e);mk(e);toast("✓ أضيفت الصورة")}
+function addImg(f){
+  if(!f)return;
+  if(f.type&&f.type.indexOf("image")!==0){toast("هذا الملف ليس صورة");return}
+  toast("جاري تحميل الصورة…");
+  var r=new FileReader();
+  r.onerror=function(){toast("تعذر قراءة الملف")};
+  r.onload=function(){var im=new Image();
+    im.onerror=function(){toast("صيغة الصورة غير مدعومة، جرّب JPG أو PNG")};
+    im.onload=function(){
+      var s=Math.max(im.naturalWidth,im.naturalHeight);
+      if(s>3000){var k=3000/s,cv=document.createElement("canvas");cv.width=Math.round(im.naturalWidth*k);cv.height=Math.round(im.naturalHeight*k);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);var fin=new Image();fin.onload=function(){put(fin)};fin.src=cv.toDataURL(f.type==="image/png"?"image/png":"image/jpeg",.92);return}
+      put(im)};
+    im.src=r.result};
+  r.readAsDataURL(f)}
+["fi","fc"].forEach(function(id){$(id).onchange=function(ev){var f=ev.target.files&&ev.target.files[0];addImg(f);ev.target.value=""}});
+document.addEventListener("paste",function(ev){var it=(ev.clipboardData||{}).items||[];for(var i=0;i<it.length;i++){if(it[i].type.indexOf("image")===0){addImg(it[i].getAsFile());return}}});
+$("at").onclick=function(){var e={k:"t",t:"اكتب النص هنا",fs:40,w:600,x:97,y:100,b:false,c:"#000000"};els.push(e);mk(e);$("tt").focus();$("tt").select()};
+
+function fit(){var w=Math.min($("stage").clientWidth-16,900);sc=w/PW;$("wrap").style.width=PW*sc+"px";$("wrap").style.height=PH*sc+"px";$("page").style.transform="scale("+sc+")"}
+window.addEventListener("resize",fit);fit();
+function mode(b){bw=b;$("mc").classList.toggle("on",!b);$("mb").classList.toggle("on",b);$("page").style.filter=b?"grayscale(1)":"none"}
+$("mc").onclick=function(){mode(false)};$("mb").onclick=function(){mode(true)};
+
+function render(){
+  var W=2480,H=3508,K=W/PW,c=document.createElement("canvas");c.width=W;c.height=H;
+  var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,W,H);
+  els.forEach(function(e){
+    if(e.k==="i"){x.drawImage(e.img,e.x*K,e.y*K,e.w*K,e.h*K);return}
+    x.font=(e.b?"bold ":"")+(e.fs*K)+"px "+FONT;x.fillStyle=e.c;x.textBaseline="middle";
+    var r=rtl(e.t);x.direction=r?"rtl":"ltr";x.textAlign=r?"right":"left";
+    var X=(r?e.x+e.w:e.x)*K;
+    e.lines.forEach(function(l,i){x.fillText(l,X,(e.y+(i+.5)*e.fs*LH)*K)})});
+  if(bw){var id=x.getImageData(0,0,W,H),d=id.data;for(var i=0;i<d.length;i+=4){var g=.299*d[i]+.587*d[i+1]+.114*d[i+2];d[i]=d[i+1]=d[i+2]=g}x.putImageData(id,0,0)}
+  return c}
+function fillPage(){var e=els[els.length-1];if(!e||e.k!=="i")return;e.w=Math.min(PW,PH/e.ar);meas(e);e.x=(PW-e.w)/2;e.y=(PH-e.h)/2;upd(e);sync()}
+function loadPdfJs(){return new Promise(function(ok,no){if(window.pdfjsLib){ok();return}var s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";s.onload=function(){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";ok()};s.onerror=no;document.head.appendChild(s)})}
+async function pdfPage(doc,n){
+  var p=await doc.getPage(n),v=p.getViewport({scale:1}),k=Math.min(4,3000/Math.max(v.width,v.height)),vp=p.getViewport({scale:k});
+  var c=document.createElement("canvas");c.width=Math.round(vp.width);c.height=Math.round(vp.height);
+  var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);
+  await p.render({canvasContext:x,viewport:vp}).promise;
+  var im=new Image();im.onload=function(){put(im);fillPage()};im.src=c.toDataURL("image/jpeg",.92)}
+async function addPdf(f){
+  toast("جاري فتح PDF…");
+  try{await loadPdfJs();var doc=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+    if(doc.numPages===1){await pdfPage(doc,1);return}
+    var o=document.createElement("div");o.id="ov";
+    var h=document.createElement("div");h.textContent="اختر الصفحة ("+doc.numPages+" صفحة)";o.appendChild(h);
+    var g=document.createElement("div");g.style.cssText="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:100%;max-width:420px";
+    for(var i=1;i<=Math.min(doc.numPages,100);i++){(function(n){var b=document.createElement("button");b.textContent=n;b.onclick=function(){o.remove();pdfPage(doc,n)};g.appendChild(b)})(i)}
+    o.appendChild(g);var cl=document.createElement("button");cl.className="g";cl.textContent="إلغاء";cl.onclick=function(){o.remove()};o.appendChild(cl);document.body.appendChild(o)
+  }catch(e){toast("تعذر فتح الـ PDF، تأكد من الاتصال بالإنترنت")}}
+$("fp").onchange=function(ev){var f=ev.target.files&&ev.target.files[0];ev.target.value="";if(f)addPdf(f)};
+function blobOf(c,t,q){return new Promise(function(r){c.toBlob(r,t,q)})}
+function pdfOf(jpg,w,h){
+  var enc=new TextEncoder(),parts=[],off=[],len=0;
+  function push(x){var b=typeof x==="string"?enc.encode(x):x;parts.push(b);len+=b.length}
+  function obj(n,b){off[n]=len;push(n+" 0 obj\n"+b+"\nendobj\n")}
+  push("%PDF-1.4\n");
+  obj(1,"<</Type/Catalog/Pages 2 0 R>>");obj(2,"<</Type/Pages/Kids[3 0 R]/Count 1>>");
+  obj(3,"<</Type/Page/Parent 2 0 R/MediaBox[0 0 595.28 841.89]/Resources<</XObject<</I 5 0 R>>>>/Contents 4 0 R>>");
+  var cs="q 595.28 0 0 841.89 0 0 cm /I Do Q";obj(4,"<</Length "+cs.length+">>\nstream\n"+cs+"\nendstream");
+  off[5]=len;push("5 0 obj\n<</Type/XObject/Subtype/Image/Width "+w+"/Height "+h+"/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length "+jpg.length+">>\nstream\n");push(jpg);push("\nendstream\nendobj\n");
+  var xr=len,t="xref\n0 6\n0000000000 65535 f \n";
+  for(var i=1;i<=5;i++)t+=String(off[i]).padStart(10,"0")+" 00000 n \n";
+  push(t+"trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n"+xr+"\n%%EOF");
+  return new Blob(parts,{type:"application/pdf"})}
+function overlay(c){
+  var o=document.createElement("div");o.id="ov";
+  var p=document.createElement("div");p.textContent="اضغط على الصورة مطولًا ثم احفظها أو شاركها للطابعة";
+  var im=new Image();im.src=c.toDataURL("image/png");
+  var b=document.createElement("button");b.textContent="إغلاق";b.onclick=function(){o.remove()};
+  o.appendChild(p);o.appendChild(im);o.appendChild(b);document.body.appendChild(o)}
+if(window.claude&&claude.use)claude.use("downloads").then(function(d){DL=d}).catch(function(){});
+async function out(kind){
+  if(!els.length){toast("أضف صورة أو نصًا أولًا");return}
+  select(null);toast("جاري التجهيز…");
+  await new Promise(function(r){setTimeout(r,50)});
+  try{
+    var c=render(),blob,name;
+    if(kind==="png"){blob=await blobOf(c,"image/png");name="A4-page.png"}
+    else{var jb=await blobOf(c,"image/jpeg",.95);var jpg=new Uint8Array(await jb.arrayBuffer());blob=pdfOf(jpg,c.width,c.height);name="A4-page.pdf"}
+    if(!DL&&window.claude&&claude.use){try{DL=await claude.use("downloads")}catch(e){}}
+    if(!DL){overlay(c);return}
+    await DL.save({filename:name,data:blob});toast("✓ تم")
+  }catch(e){if(!e||e.code!=="declined")toast("تعذر الحفظ، جرّب مرة أخرى")}}
+$("pdf").onclick=function(){out("pdf")};$("png").onclick=function(){out("png")};
+function pullShared(){try{if(!(window.Android&&Android.takeShared))return;
+  JSON.parse(Android.takeShared()||"[]").forEach(function(it){
+    if(it.type==="image"){var im=new Image();im.onload=function(){put(im);if(it.fill)fillPage()};im.src=it.data}
+    else if(it.type==="text"){var e={k:"t",t:it.text,fs:34,w:PW-120,x:60,y:60,b:false,c:"#000000"};els.push(e);mk(e)}})}catch(x){}}
+function printNow(){
+  if(!els.length){toast("أضف صورة أو نصًا أولًا");return}
+  select(null);toast("جاري التجهيز للطباعة…");
+  setTimeout(function(){var c=render();Android.print(c.toDataURL("image/jpeg",.95).split(",")[1],bw)},80)}
+if(window.Android&&Android.print){
+  $("pdf").textContent="🖨️ طباعة";$("pdf").onclick=printNow;$("png").style.display="none";
+  $("ipl").removeAttribute("for");$("ipl").onclick=function(){Android.pickPdf()};pullShared()}
+</script>
+</body>
+</html>

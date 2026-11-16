@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">طباعة A4</string>
+    <string name="pick">اختر صورة</string>
+    <string name="pdf_title">ملف PDF</string>
+    <string name="pdf_print">طباعة مباشرة</string>
+    <string name="pdf_edit">تعديل صفحة</string>
+    <string name="pdf_cancel">إلغاء</string>
+    <string name="page_hint">رقم الصفحة للتعديل</string>
+</resources>
